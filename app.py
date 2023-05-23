@@ -2,10 +2,12 @@ from tkinter import *
 import requests
 import matplotlib.pyplot as plt
 import numpy as np
+from PIL import ImageTk, Image
+
 
 root = Tk()
 root.title("Ginicoff.py")
-root.geometry("800x450+700+500")
+root.geometry("800x800+700+500")
 root.resizable(width=True,height=True)
 
 
@@ -13,6 +15,9 @@ file_post = {}
 url = "http://localhost:500/items"
 stroka = StringVar()
 def peredacha(event):
+    global canvas, root
+
+    result_change = Label(text = "")
     poor = float(e1.get())
     midleclass = float(e2.get())
     poor_income = float(e4.get())
@@ -39,11 +44,18 @@ def peredacha(event):
     file_post["poor_income"] = float(e4.get())
     file_post["midleclass_income"] = float(e5.get())
     file_post["rich_income"] = float(e6.get())
+
     result = requests.post(url, json = file_post)
-    ginicoff_result = float(result.content)
-    result_change["text"] = ginicoff_result
-    
-    
+    gini_coff = str(result.content)[2:6]
+    result_change['text'] = gini_coff
+    result_change.place(x=100,y=240) 
+
+    photo = PhotoImage(file="gini_coff.png")
+    photo_label = Label(root, image=photo)
+    photo_label.img = photo
+    photo_label.place(x = 75, y = 300)
+
+
 l = Label(text = "Калькулятор коэффициента Джини")
 l1 = Label(text = "Инструкция: Введите в поля значения численности и дохода того или иного класса от общей численности населения и от общего дохода")
 l2 = Label(text = "в десятичных дробях, чтобы сумма численностей и доходов не превышала единицу")
@@ -62,9 +74,6 @@ h5 = Label(text = "Доход среднего класса:").place(x=10,y=110)
 h6 = Label(text = "Доход богатых:").place(x=10,y=130)
 result = Label(text = "Результат:").place(x=10,y=240)
 result_change = Label(text = "").place(x=100,y=240)
-canvas = Canvas(root, height=400, width=700)
-img = PhotoImage(file = 'gini_coff.png') 
-image = canvas.create_image(0, 0, anchor='nw',image=img)
 
 b = Button(text = "Отправить")
 l.place(x=300,y=10)
