@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+rom fastapi import FastAPI
 from pydantic import BaseModel
 from typing import Union
 from gini_coff import*
@@ -6,7 +6,6 @@ import asyncio
 
 from typing import Dict
 from uvicorn import Config, Server
-from fastapi import FastAPI
 
 class Item(BaseModel):
     poor: float
@@ -20,8 +19,7 @@ app = FastAPI()
 
 @app.post("/items")
 async def create_item(item: Item):
-    calc = Calculator()
-    result = calc.ginicoff(item.poor, item.midleclass, item.rich, item.poor_income, item.midleclass_income, item.rich_income)
+    result = ginicoff(item.poor, item.midleclass, item.rich, item.poor_income, item.midleclass_income, item.rich_income)
     return result
 
 def start(app, host, port, loop = None):
