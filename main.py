@@ -1,4 +1,4 @@
-rom fastapi import FastAPI
+from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import Union
 from gini_coff import*
